@@ -1,5 +1,8 @@
 import React from "react";
 
+import { ReactComponent as Search } from "../../icons/search.svg";
+import { ReactComponent as Close } from "../../icons/close_fill.svg";
+
 const AddProduct = () => {
   const response = [
     {
@@ -49,23 +52,47 @@ const AddProduct = () => {
       },
     },
   ];
+  const checkboxStyle = `w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 cursor-pointer`;
 
   return (
-    <div className="bg-white flex flex-col border w-3/5 border-red-500 p-2">
-      <div>
-        <input placeholder="Search product" className="border p-1 w-full"></input>
+    <div className="bg-white flex flex-col border w-2/5 rounded-lg text-sm">
+      <div className="p-3 flex items-center border-b justify-between text-base font-medium">
+        <h2>Add products</h2>
+        <Close className="scale-90 fill-zinc-500 hover:fill-black cursor-pointer" />
+      </div>
+      <div className="m-3 flex items-center border rounded ">
+        <Search className="scale-75 fill-zinc-500 hover:fill-black cursor-pointer" />
+        <input placeholder="Search product" className="w-full outline-none bg-transparent"></input>
       </div>
       <div>
         {response.map((product) => (
-          <div className="border p-2">
-            <div>
+          <div className="border-y cursor-pointer">
+            <div className="flex px-4 py-2 items-center hover:bg-zinc-100">
+              <input
+                id="react-checkbox"
+                type="checkbox"
+                value=""
+                checked
+                className={checkboxStyle}
+              />
+              <img src={product.image.src} className="w-9 h-9 border rounded mx-4" />
               <p>{product.title}</p>
             </div>
             <div>
               {product.variants.map((variant) => (
-                <div className="flex justify-between border py-2  pl-20 pr-10">
-                  <p>{variant.title}</p>
-                  <p>{variant.price}</p>
+                <div className="flex justify-between items-center hover:bg-zinc-100 border-t py-2 px-5 text-xs">
+                  <div className="flex items-center">
+                    <input
+                      id="react-checkbox"
+                      type="checkbox"
+                      value=""
+                      // checked
+                      className={`${checkboxStyle} mx-7`}
+                    />
+                    <p>{variant.title}</p>
+                  </div>
+
+                  <p>₹{variant.price}</p>
                 </div>
               ))}
             </div>
