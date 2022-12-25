@@ -10,13 +10,13 @@ const HomePage = () => {
 
   const [{ isOver }, drop] = useDrop(() => ({
     accept: "PRODUCT",
-    drop: (item: object) => addedProduct(item.id),
+    drop: (item) => addedProduct(item.id),
     collect: (monitor) => ({
       isOver: !!monitor.isOver(),
     }),
   }));
 
-  const addedProduct = (id: string) => {
+  const addedProduct = (id) => {
     console.log(id);
   };
 

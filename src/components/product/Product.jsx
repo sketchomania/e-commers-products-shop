@@ -7,17 +7,12 @@ import { ReactComponent as Drag } from "../../icons/drag_indicator.svg";
 import { ReactComponent as Expand } from "../../icons/expand_more.svg";
 import { ReactComponent as Collaps } from "../../icons/expand_less.svg";
 
-type Props = {
-  id: number;
-  title: string;
-};
-
-const Product: React.FC<Props> = ({ id, title }) => {
+const Product = ({ id, title }) => {
   const [showVarient, setShowVarient] = useState(false);
 
   const [{ isDragging }, drag] = useDrag(() => ({
     type: "PRODUCT",
-    item: {id: id},
+    item: { id: id },
     collect: (monitor) => ({
       isDragging: !!monitor.isDragging(),
     }),
