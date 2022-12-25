@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { useDrop } from "react-dnd/dist/hooks";
 
 import Product from "./product/Product";
 import AddProduct from "./addProduct/AddProduct";
@@ -129,14 +128,7 @@ const HomePage = () => {
   ]);
   const [selectedProduct, setSelectedProduct] = useState([]);
   const [showModal, setShowModal] = useState(true);
-
-  const [{ isOver }, drop] = useDrop(() => ({
-    accept: "PRODUCT",
-    drop: (item) => addedProduct(item.id),
-    collect: (monitor) => ({
-      isOver: !!monitor.isOver(),
-    }),
-  }));
+  const isOver = false;
 
   const addedProduct = (id) => {
     console.log(id);
@@ -151,7 +143,7 @@ const HomePage = () => {
             <p className="text-xl py-3 text-gray-400 font-semibold m-2">Product</p>
             <p className="text-xl py-3 text-gray-400 font-semibold m-2">Discount</p>
           </div>
-          <div className={`${isOver ? "border-cyan-400" : ""} border-2`} ref={drop}>
+          <div className={`${isOver ? "border-cyan-400" : ""} border-2`}>
             {productList.map((product) => (
               <Product
                 id={product.id}

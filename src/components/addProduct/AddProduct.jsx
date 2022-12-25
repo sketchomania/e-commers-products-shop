@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { ReactComponent as Search } from "../../icons/search.svg";
 import { ReactComponent as Close } from "../../icons/close_fill.svg";
 
-const AddProduct = ({ selectedProduct, setSelectedProduct, setShowModal }) => {
+const AddProduct = ({ setShowModal }) => {
   const response = [
     {
       id: 88,
@@ -384,6 +384,7 @@ const AddProduct = ({ selectedProduct, setSelectedProduct, setShowModal }) => {
     },
   ];
   const checkboxStyle = `w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 cursor-pointer`;
+  const [selectedProducts, setSelectedProducts] = useState([]);
 
   const RenderProduct = ({ productData }) => {
     const [selectedVariant, setSelectedVariant] = useState([]);
@@ -392,37 +393,34 @@ const AddProduct = ({ selectedProduct, setSelectedProduct, setShowModal }) => {
     );
 
     const toggleProductChecked = () => {
-      setIsProductChecked(!isProductChecked);
+      // setIsProductChecked(!isProductChecked);
+      setIsProductChecked(selectedVariant.length === productData.variants.length);
 
       if (!!isProductChecked) {
+        if (selectedVariant.length === 0) {
+          return;
+        }
         setSelectedVariant([]);
       }
       if (!isProductChecked) {
-        selectAllVariant();
-        console.log(
-          "P:",
-          productData.id,
-          productData.variants.length,
-          productData,
-          "selectedVariant:",
-          selectedVariant
-        );
+        const variantArr = productData.variants.map((variant) => {
+          return {
+            id: variant.id,
+            product_id: variant.product_id,
+          };
+        });
+        if (selectedVariant.length === productData.variants.length) {
+          return;
+        }
+        setSelectedVariant(variantArr);
+        // setSelectedProducts([...selectedProducts, selectedVariant])
+        // console.log("P:", productData.id, productData.variants.length, productData);
+        // console.log("variantArr: ", variantArr);
       }
     };
 
     const handleProductChecked = (e) => {
       const { name, checked } = e.target;
-    };
-    const selectAllVariant = () => {
-      const variantArr = productData.variants.map((variant) => {
-        return {
-          id: variant.id,
-          product_id: variant.product_id,
-        };
-      });
-      console.log("variantArr: ", variantArr);
-      setSelectedVariant(variantArr);
-      setIsProductChecked(true);
     };
 
     return (
@@ -441,7 +439,7 @@ const AddProduct = ({ selectedProduct, setSelectedProduct, setShowModal }) => {
           />
           <img src={productData.image.src} className="w-9 h-9 border rounded mx-4" />
           <p>{productData.title}</p>
-          <p>{JSON.stringify(selectedVariant)}</p>
+          <p className="text-xs">{JSON.stringify(selectedVariant)}</p>
         </div>
         <div>
           {productData.variants.map((variant) => (
@@ -467,8 +465,6 @@ const AddProduct = ({ selectedProduct, setSelectedProduct, setShowModal }) => {
       if (!!isVariantChecked) {
         const newVal = selectedVariant.filter((item) => item.id !== variantData.id);
         setSelectedVariant(newVal);
-        // console.log(newVal, "Byee");
-        // console.log(selectedVariant);
       }
       if (!isVariantChecked) {
         const variantObj = { id: variantData.id, product_id: variantData.product_id };
@@ -546,6 +542,9 @@ const AddProduct = ({ selectedProduct, setSelectedProduct, setShowModal }) => {
             <button
               className=" bg-green-700 px-4 p-0.5 hover:text-white rounded opacity-75 hover:opacity-100"
               title={"Add Product"}
+              onClick={() => {
+                console.log("selectedProducts: ", selectedProducts);
+              }}
             >
               {"Add"}
             </button>

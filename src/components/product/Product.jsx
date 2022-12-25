@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { useDrag, useDrop } from "react-dnd/dist/hooks";
 
 import { ReactComponent as Close } from "../../icons/close_fill.svg";
 import { ReactComponent as Edit } from "../../icons/edit_fill.svg";
@@ -9,21 +8,7 @@ import { ReactComponent as Collaps } from "../../icons/expand_less.svg";
 
 const Product = ({ id, title, setShowModal, product }) => {
   const [showVarient, setShowVarient] = useState(false);
-
-  const [{ isDragging }, drag] = useDrag(() => ({
-    type: "PRODUCT",
-    item: { id: id },
-    collect: (monitor) => ({
-      isDragging: !!monitor.isDragging(),
-    }),
-  }));
-
-  const [{ isOver }, drop] = useDrop(() => ({
-    accept: "PRODUCT",
-    collect: (monitor) => ({
-      isOver: monitor.isOver(),
-    }),
-  }));
+  const isDragging = false;
 
   const Varient = ({ varient }) => {
     return (
@@ -37,7 +22,7 @@ const Product = ({ id, title, setShowModal, product }) => {
     );
   };
   return (
-    <div className={`${isDragging ? "border-green-500" : ""} border rounded`} ref={drag}>
+    <div className={`${isDragging ? "border-green-500" : ""} border rounded`}>
       <div className="flex items-center ">
         <Drag className="w-7 h-7 pt-px cursor-pointer fill-zinc-500 hover:fill-black" />
         <div className="flex w-full items-center justify-between bg-white rounded-md px-6 mx-2">
