@@ -1,10 +1,24 @@
 import React, { useState } from "react";
+import { useDrop } from "react-dnd/dist/hooks";
+
 import Product from "./product/Product";
 import AddProduct from "./addProduct/AddProduct";
 
 const HomePage = () => {
   const [selectedProduct, setselectedProduct] = useState({});
   const [showModal, setShowModal] = useState(false);
+
+  const [{ isOver }, drop] = useDrop(() => ({
+    accept: "PRODUCT",
+    drop: (item: object) => addedProduct(item.id),
+    collect: (monitor) => ({
+      isOver: !!monitor.isOver(),
+    }),
+  }));
+
+  const addedProduct = (id: string) => {
+    console.log(id);
+  };
 
   return (
     <div className="h-screen w-full">
@@ -15,12 +29,14 @@ const HomePage = () => {
             <p className="text-xl py-3 text-gray-400 font-semibold m-2">Product</p>
             <p className="text-xl py-3 text-gray-400 font-semibold m-2">Discount</p>
           </div>
-
-          <Product />
-          <Product />
+          <div className={`${isOver ? "border-cyan-400" : ""} border p-2`} ref={drop}>
+            <Product id={1} title={"p-1"} />
+            <Product id={2} title={"p-2"} />
+            <Product id={3} title={"p-3"} />
+          </div>
         </div>
 
-        <div className="flex flex-row-reverse">
+        <div className={`flex flex-row-reverse`}>
           <button
             className={`transition p-2.5 rounded-md  opacity-75 hover:opacity-100 w-80
           text-green-600 border-2 border-green-600  hover:bg-green-500 hover:text-white`}

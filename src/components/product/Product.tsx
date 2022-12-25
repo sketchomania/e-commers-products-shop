@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useDrag, useDrop } from "react-dnd/dist/hooks";
 
 import { ReactComponent as Close } from "../../icons/close_fill.svg";
 import { ReactComponent as Edit } from "../../icons/edit_fill.svg";
@@ -6,8 +7,29 @@ import { ReactComponent as Drag } from "../../icons/drag_indicator.svg";
 import { ReactComponent as Expand } from "../../icons/expand_more.svg";
 import { ReactComponent as Collaps } from "../../icons/expand_less.svg";
 
-const Product = () => {
+type Props = {
+  id: number;
+  title: string;
+};
+
+const Product: React.FC<Props> = ({ id, title }) => {
   const [showVarient, setShowVarient] = useState(false);
+
+  const [{ isDragging }, drag] = useDrag(() => ({
+    type: "PRODUCT",
+    item: {id: id},
+    collect: (monitor) => ({
+      isDragging: !!monitor.isDragging(),
+    }),
+  }));
+
+  const [{ isOver }, drop] = useDrop(() => ({
+    accept: "PRODUCT",
+    collect: (monitor) => ({
+      isOver: monitor.isOver(),
+    }),
+  }));
+
   const Varient = () => {
     return (
       <div className="flex items-center pl-16">
@@ -20,7 +42,7 @@ const Product = () => {
     );
   };
   return (
-    <div className="border">
+    <div className={`${isDragging ? "border-green-500" : ""} border rounded`} ref={drag}>
       <div className="flex items-center ">
         <Drag className="w-7 h-7 pt-px cursor-pointer fill-zinc-500 hover:fill-black" />
         <div className="flex w-full items-center bg-white rounded-md px-6 mx-2">
@@ -28,7 +50,7 @@ const Product = () => {
             id="product"
             name="product"
             type="text"
-            placeholder="Select Product"
+            placeholder={`Select ${title} Product`}
             className="outline-none rounded-md bg-inherit border-none py-2 w-full"
             required
           />
