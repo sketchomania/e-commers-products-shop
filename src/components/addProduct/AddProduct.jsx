@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 import { ReactComponent as Search } from "../../icons/search.svg";
 import { ReactComponent as Close } from "../../icons/close_fill.svg";
@@ -385,6 +385,34 @@ const AddProduct = ({ selectedProduct, setSelectedProduct, setShowModal }) => {
   ];
   const checkboxStyle = `w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 cursor-pointer`;
 
+  const RenderVariant = ({ variantData }) => {
+    const [isChecked, setIsChecked] = useState(false);
+    const toggleChecked = () => {
+      setIsChecked(!isChecked);
+      console.log("product_id:", variantData.product_id, "v_id:", variantData.id);
+    };
+
+    return (
+      <div
+        className="flex justify-between items-center hover:bg-zinc-100 border-t py-2 px-5 text-xs"
+        onClick={toggleChecked}
+      >
+        <div className="flex items-center">
+          <input
+            id="react-checkbox"
+            type="checkbox"
+            value=""
+            checked={!!isChecked}
+            className={`${checkboxStyle} mx-7`}
+          />
+          <p>{variantData.title}</p>
+        </div>
+
+        <p>₹{variantData.price}</p>
+      </div>
+    );
+  };
+
   return (
     <div className="absolute flex items-center justify-center top-0 left-0 h-screen w-screen ">
       <div
@@ -409,7 +437,12 @@ const AddProduct = ({ selectedProduct, setSelectedProduct, setShowModal }) => {
         <div className="h-96 overflow-y-scroll overflow-x-hidden">
           {response.map((product) => (
             <div className="border-y cursor-pointer">
-              <div className="flex px-4 py-2 items-center hover:bg-zinc-100">
+              <div
+                className="flex px-4 py-2 items-center hover:bg-zinc-100"
+                onClick={() => {
+                  console.log(product);
+                }}
+              >
                 <input
                   id="react-checkbox"
                   type="checkbox"
@@ -422,37 +455,29 @@ const AddProduct = ({ selectedProduct, setSelectedProduct, setShowModal }) => {
               </div>
               <div>
                 {product.variants.map((variant) => (
-                  <div className="flex justify-between items-center hover:bg-zinc-100 border-t py-2 px-5 text-xs">
-                    <div className="flex items-center">
-                      <input
-                        id="react-checkbox"
-                        type="checkbox"
-                        value=""
-                        // checked
-                        className={`${checkboxStyle} mx-7`}
-                      />
-                      <p>{variant.title}</p>
-                    </div>
-
-                    <p>₹{variant.price}</p>
-                  </div>
+                  <RenderVariant variantData={variant} />
                 ))}
               </div>
             </div>
           ))}
         </div>
-        <div className="flex justify-between border">
+        <div className="flex justify-between p-2">
           <p>product selected</p>
           <div>
             <button
-              className="px-4 border mx-1"
+              className="px-4 p-0.5 border mx-1 rounded hover:bg-zinc-200"
               onClick={() => {
                 setShowModal(false);
               }}
             >
               Cancel
             </button>
-            <button className="px-4 border mx-1">Add</button>
+            <button
+              className=" bg-green-700 px-4 p-0.5 hover:text-white rounded opacity-75 hover:opacity-100"
+              title={"Add Product"}
+            >
+              {"Add"}
+            </button>
           </div>
         </div>
       </div>

@@ -7,7 +7,7 @@ import { ReactComponent as Drag } from "../../icons/drag_indicator.svg";
 import { ReactComponent as Expand } from "../../icons/expand_more.svg";
 import { ReactComponent as Collaps } from "../../icons/expand_less.svg";
 
-const Product = ({ id, title }) => {
+const Product = ({ id, title, setShowModal, product }) => {
   const [showVarient, setShowVarient] = useState(false);
 
   const [{ isDragging }, drag] = useDrag(() => ({
@@ -25,13 +25,13 @@ const Product = ({ id, title }) => {
     }),
   }));
 
-  const Varient = () => {
+  const Varient = ({ varient }) => {
     return (
-      <div className="flex items-center pl-16">
+      <div className="flex items-center pl-16 pr-2 border">
         <Drag className="w-7 h-7 mr-1 pt-px cursor-pointer fill-zinc-500 hover:fill-black" />
-        <p className="bg-white px-4 m-2 w-60 rounded-full">varient</p>
-        <p className="bg-white px-4 m-2 rounded-full">20</p>
-        <p className="bg-white px-4 m-2 rounded-full">% Off</p>
+        <p className="bg-white px-4 m-2 w-full rounded-full">{varient.title}</p>
+        {/* <p className="bg-white px-4 m-2 rounded-full">20</p>
+        <p className="bg-white px-4 m-2 rounded-full">% Off</p> */}
         <Close className="fill-zinc-500 hover:fill-black" />
       </div>
     );
@@ -40,16 +40,14 @@ const Product = ({ id, title }) => {
     <div className={`${isDragging ? "border-green-500" : ""} border rounded`} ref={drag}>
       <div className="flex items-center ">
         <Drag className="w-7 h-7 pt-px cursor-pointer fill-zinc-500 hover:fill-black" />
-        <div className="flex w-full items-center bg-white rounded-md px-6 mx-2">
-          <input
-            id="product"
-            name="product"
-            type="text"
-            placeholder={`Select ${title} Product`}
-            className="outline-none rounded-md bg-inherit border-none py-2 w-full"
-            required
-          />
-          <div className="fill-green-700 scale-75 hover:bg-zinc-200 border p-2 rounded cursor-pointer">
+        <div className="flex w-full items-center justify-between bg-white rounded-md px-6 mx-2">
+          <p className="w-full text-zinc-500">{title}</p>
+          <div
+            className="fill-green-700 scale-75 hover:bg-zinc-100 p-2 rounded cursor-pointer"
+            onClick={() => {
+              setShowModal(true);
+            }}
+          >
             <Edit />
           </div>
         </div>
@@ -77,9 +75,9 @@ const Product = ({ id, title }) => {
         </div>
         {showVarient && (
           <>
-            <Varient />
-            <Varient />
-            <Varient />
+            {product.variants.map((variant) => (
+              <Varient varient={variant} />
+            ))}
           </>
         )}
       </div>
