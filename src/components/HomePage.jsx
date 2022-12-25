@@ -5,8 +5,8 @@ import Product from "./product/Product";
 import AddProduct from "./addProduct/AddProduct";
 
 const HomePage = () => {
-  const [selectedProduct, setselectedProduct] = useState({});
-  const [showModal, setShowModal] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState({});
+  const [showModal, setShowModal] = useState(true);
 
   const [{ isOver }, drop] = useDrop(() => ({
     accept: "PRODUCT",
@@ -42,12 +42,21 @@ const HomePage = () => {
           text-green-600 border-2 border-green-600  hover:bg-green-500 hover:text-white`}
             type="button"
             title={"Add Discount"}
+            onClick={() => {
+              setShowModal(true);
+            }}
           >
             {"Add Discount"}
           </button>
         </div>
       </div>
-      <AddProduct />
+      {showModal && (
+        <AddProduct
+          selectedProduct={selectedProduct}
+          setSelectedProduct={setSelectedProduct}
+          setShowModal={setShowModal}
+        />
+      )}
     </div>
   );
 };
