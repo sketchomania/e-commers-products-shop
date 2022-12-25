@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { ReactComponent as Search } from "../../icons/search.svg";
 import { ReactComponent as Close } from "../../icons/close_fill.svg";
@@ -385,11 +385,102 @@ const AddProduct = ({ selectedProduct, setSelectedProduct, setShowModal }) => {
   ];
   const checkboxStyle = `w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 cursor-pointer`;
 
-  const RenderVariant = ({ variantData }) => {
-    const [isChecked, setIsChecked] = useState(false);
+  const RenderProduct = ({ productData }) => {
+    const [selectedVariant, setSelectedVariant] = useState([]);
+    const [isProductChecked, setIsProductChecked] = useState(
+      selectedVariant.length === productData.variants.length
+    );
+
+    const toggleProductChecked = () => {
+      setIsProductChecked(!isProductChecked);
+
+      if (!!isProductChecked) {
+        setSelectedVariant([]);
+      }
+      if (!isProductChecked) {
+        selectAllVariant();
+        console.log(
+          "P:",
+          productData.id,
+          productData.variants.length,
+          productData,
+          "selectedVariant:",
+          selectedVariant
+        );
+      }
+    };
+
+    const handleProductChecked = (e) => {
+      const { name, checked } = e.target;
+    };
+    const selectAllVariant = () => {
+      const variantArr = productData.variants.map((variant) => {
+        return {
+          id: variant.id,
+          product_id: variant.product_id,
+        };
+      });
+      console.log("variantArr: ", variantArr);
+      setSelectedVariant(variantArr);
+      setIsProductChecked(true);
+    };
+
+    return (
+      <div className="border-y cursor-pointer">
+        <div
+          className="flex px-4 py-2 items-center hover:bg-zinc-100"
+          onClick={toggleProductChecked}
+        >
+          <input
+            id="react-checkbox"
+            type="checkbox"
+            value=""
+            onChange={handleProductChecked}
+            checked={!!(selectedVariant.length === productData.variants.length)}
+            className={checkboxStyle}
+          />
+          <img src={productData.image.src} className="w-9 h-9 border rounded mx-4" />
+          <p>{productData.title}</p>
+          <p>{JSON.stringify(selectedVariant)}</p>
+        </div>
+        <div>
+          {productData.variants.map((variant) => (
+            <RenderVariant
+              variantData={variant}
+              selectedVariant={selectedVariant}
+              setSelectedVariant={setSelectedVariant}
+            />
+          ))}
+        </div>
+      </div>
+    );
+  };
+
+  const RenderVariant = ({ variantData, selectedVariant, setSelectedVariant }) => {
+    const [isVariantChecked, setIsVariantChecked] = useState(
+      selectedVariant.filter((item) => item.id === variantData.id).length > 0
+    );
+
     const toggleChecked = () => {
-      setIsChecked(!isChecked);
-      console.log("product_id:", variantData.product_id, "v_id:", variantData.id);
+      setIsVariantChecked(!isVariantChecked);
+
+      if (!!isVariantChecked) {
+        const newVal = selectedVariant.filter((item) => item.id !== variantData.id);
+        setSelectedVariant(newVal);
+        // console.log(newVal, "Byee");
+        // console.log(selectedVariant);
+      }
+      if (!isVariantChecked) {
+        const variantObj = { id: variantData.id, product_id: variantData.product_id };
+        if (selectedVariant.filter((item) => item.id === variantData.id).length < 1) {
+          setSelectedVariant([...selectedVariant, variantObj]);
+        }
+        // console.log("variant_id:", variantObj, selectedVariant);
+      }
+    };
+
+    const handleChecked = (e) => {
+      const { name, checked } = e.target;
     };
 
     return (
@@ -401,8 +492,10 @@ const AddProduct = ({ selectedProduct, setSelectedProduct, setShowModal }) => {
           <input
             id="react-checkbox"
             type="checkbox"
-            value=""
-            checked={!!isChecked}
+            name={variantData.title}
+            onChange={handleChecked}
+            checked={selectedVariant.filter((item) => item.id === variantData.id).length > 0}
+            // checked={!!isVariantChecked}
             className={`${checkboxStyle} mx-7`}
           />
           <p>{variantData.title}</p>
@@ -436,29 +529,7 @@ const AddProduct = ({ selectedProduct, setSelectedProduct, setShowModal }) => {
         </div>
         <div className="h-96 overflow-y-scroll overflow-x-hidden">
           {response.map((product) => (
-            <div className="border-y cursor-pointer">
-              <div
-                className="flex px-4 py-2 items-center hover:bg-zinc-100"
-                onClick={() => {
-                  console.log(product);
-                }}
-              >
-                <input
-                  id="react-checkbox"
-                  type="checkbox"
-                  value=""
-                  checked
-                  className={checkboxStyle}
-                />
-                <img src={product.image.src} className="w-9 h-9 border rounded mx-4" />
-                <p>{product.title}</p>
-              </div>
-              <div>
-                {product.variants.map((variant) => (
-                  <RenderVariant variantData={variant} />
-                ))}
-              </div>
-            </div>
+            <RenderProduct productData={product} />
           ))}
         </div>
         <div className="flex justify-between p-2">
