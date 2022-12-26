@@ -411,10 +411,8 @@ const AddProduct = ({ setShowModal }) => {
         }
         setSelectedVariant([]);
         prodObj.variants = [];
-        // console.log("prodObj", prodObj);
-        // proArr[prodObj.index] = prodObj;
-        
-        // remove if no variant is selected
+
+        // remove product if no variant is selected
         proArr.splice(prodObj.index, 1);
         console.log("proArr", proArr);
       } else if (!isProductChecked) {
@@ -430,7 +428,6 @@ const AddProduct = ({ setShowModal }) => {
         }
         setSelectedVariant(variantArr);
         prodObj.variants = variantArr;
-        // console.log("prodObj", prodObj);
         proArr[prodObj.index] = prodObj;
         console.log("proArr", proArr);
 
@@ -455,8 +452,6 @@ const AddProduct = ({ setShowModal }) => {
               //   title: productData.title,
               //   variants: selectedVariant,
               // },
-              // "proArr",
-              // proArr,
               ();
           }}
         >
@@ -510,15 +505,11 @@ const AddProduct = ({ setShowModal }) => {
         setSelectedVariant(remainingVariants);
         prodObj.variants = remainingVariants;
 
-        // console.log("prodObj", prodObj);
         proArr[prodObj.index] = prodObj;
-        // remove if no variant is selected
-        if(remainingVariants.length < 1){
+        // remove product if no variant is selected
+        if (remainingVariants.length < 1) {
           proArr.splice(prodObj.index, 1);
         }
-        // console.log("proArr: if: ", !!isVariantChecked, proArr);
-
-        // addProduct(proArr);
       } else if (!isVariantChecked) {
         const variantObj = {
           id: variantData.id,
@@ -529,19 +520,9 @@ const AddProduct = ({ setShowModal }) => {
           setSelectedVariant([...selectedVariant, variantObj]);
           prodObj.variants = [...selectedVariant, variantObj];
 
-          // console.log("prodObj", prodObj);
           proArr[prodObj.index] = prodObj;
-          console.log("proArr: else if: ", !isVariantChecked, proArr);
-
-          // addProduct(prodObj.id, prodObj.title, prodObj.variants);
-          // first revert back to stage when proArr was logging correct value
-          // addProduct(proArr);
         }
-        // console.log("variant_id:", variantObj, selectedVariant);
       }
-      //   console.log("after: ", prodObj, isVariantChecked, proArr);
-      // addProduct(prodObj);
-      // addProduct(proArr);
     };
 
     const handleChecked = (e) => {
@@ -617,7 +598,6 @@ const AddProduct = ({ setShowModal }) => {
               onClick={() => {
                 setSelectedProductsArray(proArr);
                 addProduct(proArr);
-                console.log("proArr: ", proArr);
               }}
             >
               {"Add"}
