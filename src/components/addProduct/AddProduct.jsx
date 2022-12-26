@@ -414,7 +414,6 @@ const AddProduct = ({ setShowModal }) => {
 
         // remove product if no variant is selected
         proArr.splice(prodObj.index, 1);
-        console.log("proArr", proArr);
       } else if (!isProductChecked) {
         const variantArr = productData.variants.map((variant) => {
           return {
@@ -429,34 +428,11 @@ const AddProduct = ({ setShowModal }) => {
         setSelectedVariant(variantArr);
         prodObj.variants = variantArr;
         proArr[prodObj.index] = prodObj;
-        console.log("proArr", proArr);
-
-        // console.log("P:", productData.id, productData.variants.length, productData);
-        // console.log("variantArr: ", variantArr);
       }
-    };
-
-    const handleProductChecked = (e) => {
-      const { name, checked } = e.target;
     };
 
     return (
       <>
-        <button
-          className=" bg-green-700 px-4 p-0.5 hover:text-white rounded opacity-75 hover:opacity-100"
-          onClick={() => {
-            console
-              .log
-              // {
-              //   id: productData.id,
-              //   title: productData.title,
-              //   variants: selectedVariant,
-              // },
-              ();
-          }}
-        >
-          {`Log ${index}`}
-        </button>
         <div className="border-y cursor-pointer">
           <div
             className="flex px-4 py-2 items-center hover:bg-zinc-100"
@@ -466,12 +442,12 @@ const AddProduct = ({ setShowModal }) => {
               id="react-checkbox"
               type="checkbox"
               value=""
-              onChange={handleProductChecked}
+              onChange={() => {}}
               checked={!!(selectedVariant.length === productData.variants.length)}
               className={checkboxStyle}
             />
             <img src={productData.image.src} alt="image" className="w-9 h-9 border rounded mx-4" />
-            <p>{productData.title}</p>
+            <p className="text-xs scale-75">{`index: ${index} ${productData.title}`}</p>
             <p className="text-xs scale-75">{`${JSON.stringify(proArr)}`}</p>
             {/* <p className="text-xs scale-75">{JSON.stringify(selectedVariant)}</p> */}
           </div>
@@ -525,10 +501,6 @@ const AddProduct = ({ setShowModal }) => {
       }
     };
 
-    const handleChecked = (e) => {
-      const { name, checked } = e.target;
-    };
-
     return (
       <div
         className="flex justify-between items-center hover:bg-zinc-100 border-t py-2 px-5 text-xs"
@@ -539,7 +511,7 @@ const AddProduct = ({ setShowModal }) => {
             id="react-checkbox"
             type="checkbox"
             name={variantData.title}
-            onChange={handleChecked}
+            onChange={() => {}}
             checked={selectedVariant.filter((item) => item.id === variantData.id).length > 0}
             // checked={!!isVariantChecked}
             className={`${checkboxStyle} mx-7`}
@@ -556,12 +528,7 @@ const AddProduct = ({ setShowModal }) => {
   // addProduct
   return (
     <div className="absolute flex items-center justify-center top-0 left-0 h-screen w-screen ">
-      <div
-        className="fixed top-0 left-0 h-full w-full bg-zinc-900 bg-opacity-60 z-10"
-        onClick={() => {
-          console.log("Edit Label Backdrop clicked");
-        }}
-      ></div>
+      <div className="fixed top-0 left-0 h-full w-full bg-zinc-900 bg-opacity-60 z-10"></div>
 
       <div className="bg-white z-10 flex flex-col border w-2/5 rounded-lg text-sm">
         <div className="p-3 flex items-center border-b justify-between text-base font-medium">
