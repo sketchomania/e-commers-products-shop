@@ -386,35 +386,59 @@ const AddProduct = ({ setShowModal }) => {
   const checkboxStyle = `w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 cursor-pointer`;
   const [selectedProducts, setSelectedProducts] = useState([]);
 
-  const RenderProduct = ({ productData }) => {
+  const RenderProduct = ({ productData, selectedProducts, setSelectedProducts }) => {
     const [selectedVariant, setSelectedVariant] = useState([]);
     const [isProductChecked, setIsProductChecked] = useState(
       selectedVariant.length === productData.variants.length
     );
+    // setSelectedProducts([
+    //   ...selectedProducts,
+    //   {
+    //     id: productData.id,
+    //     title: productData.title,
+    //     variants: [],
+    //   },
+    // ]);
 
     const toggleProductChecked = () => {
-      // setIsProductChecked(!isProductChecked);
-      setIsProductChecked(selectedVariant.length === productData.variants.length);
+      setIsProductChecked(!isProductChecked);
+      // setIsProductChecked(selectedVariant.length === productData.variants.length);
+      // console.log({
+      //   id: productData.id,
+      //   title: productData.title,
+      //   variants: selectedVariant,
+      // });
 
       if (!!isProductChecked) {
+        // const remainingProducts = selectedProducts.filter((item) => item.id !== productData.id);
+        // setSelectedProducts(remainingProducts);
         if (selectedVariant.length === 0) {
           return;
         }
         setSelectedVariant([]);
-      }
-      if (!isProductChecked) {
+      } else if (!isProductChecked) {
         const variantArr = productData.variants.map((variant) => {
           return {
             id: variant.id,
             product_id: variant.product_id,
+            title: variant.title,
           };
         });
         if (selectedVariant.length === productData.variants.length) {
           return;
         }
         setSelectedVariant(variantArr);
-        // setSelectedProducts([...selectedProducts, selectedVariant])
+        const productObj = {
+          id: productData.id,
+          title: productData.title,
+          variants: variantArr,
+        };
+        // if (selectedProducts.filter((item) => item.id === productData.id).length < 1) {
+        //   setSelectedProducts([...selectedProducts, productObj]);
+        // }
+
         // console.log("P:", productData.id, productData.variants.length, productData);
+        // setSelectedProducts([...selectedProducts, variantArr]);
         // console.log("variantArr: ", variantArr);
       }
     };
@@ -424,33 +448,47 @@ const AddProduct = ({ setShowModal }) => {
     };
 
     return (
-      <div className="border-y cursor-pointer">
-        <div
-          className="flex px-4 py-2 items-center hover:bg-zinc-100"
-          onClick={toggleProductChecked}
+      <>
+        <button
+          className=" bg-green-700 px-4 p-0.5 hover:text-white rounded opacity-75 hover:opacity-100"
+          onClick={() => {
+            console.log({
+              id: productData.id,
+              title: productData.title,
+              variants: selectedVariant,
+            });
+          }}
         >
-          <input
-            id="react-checkbox"
-            type="checkbox"
-            value=""
-            onChange={handleProductChecked}
-            checked={!!(selectedVariant.length === productData.variants.length)}
-            className={checkboxStyle}
-          />
-          <img src={productData.image.src} className="w-9 h-9 border rounded mx-4" />
-          <p>{productData.title}</p>
-          <p className="text-xs">{JSON.stringify(selectedVariant)}</p>
-        </div>
-        <div>
-          {productData.variants.map((variant) => (
-            <RenderVariant
-              variantData={variant}
-              selectedVariant={selectedVariant}
-              setSelectedVariant={setSelectedVariant}
+          {"Log"}
+        </button>
+        <div className="border-y cursor-pointer">
+          <div
+            className="flex px-4 py-2 items-center hover:bg-zinc-100"
+            onClick={toggleProductChecked}
+          >
+            <input
+              id="react-checkbox"
+              type="checkbox"
+              value=""
+              onChange={handleProductChecked}
+              checked={!!(selectedVariant.length === productData.variants.length)}
+              className={checkboxStyle}
             />
-          ))}
+            <img src={productData.image.src} alt="image" className="w-9 h-9 border rounded mx-4" />
+            <p>{productData.title}</p>
+            <p className="text-xs scale-75">{JSON.stringify(selectedVariant)}</p>
+          </div>
+          <div>
+            {productData.variants.map((variant) => (
+              <RenderVariant
+                variantData={variant}
+                selectedVariant={selectedVariant}
+                setSelectedVariant={setSelectedVariant}
+              />
+            ))}
+          </div>
         </div>
-      </div>
+      </>
     );
   };
 
@@ -463,11 +501,15 @@ const AddProduct = ({ setShowModal }) => {
       setIsVariantChecked(!isVariantChecked);
 
       if (!!isVariantChecked) {
-        const newVal = selectedVariant.filter((item) => item.id !== variantData.id);
-        setSelectedVariant(newVal);
+        const remainingVariants = selectedVariant.filter((item) => item.id !== variantData.id);
+        setSelectedVariant(remainingVariants);
       }
       if (!isVariantChecked) {
-        const variantObj = { id: variantData.id, product_id: variantData.product_id };
+        const variantObj = {
+          id: variantData.id,
+          product_id: variantData.product_id,
+          title: variantData.title,
+        };
         if (selectedVariant.filter((item) => item.id === variantData.id).length < 1) {
           setSelectedVariant([...selectedVariant, variantObj]);
         }
@@ -535,6 +577,7 @@ const AddProduct = ({ setShowModal }) => {
               className="px-4 p-0.5 border mx-1 rounded hover:bg-zinc-200"
               onClick={() => {
                 setShowModal(false);
+                setSelectedProducts([]);
               }}
             >
               Cancel
@@ -550,6 +593,7 @@ const AddProduct = ({ setShowModal }) => {
             </button>
           </div>
         </div>
+        <p className="text-xs scale-75">{JSON.stringify(selectedProducts)}</p>
       </div>
     </div>
   );
