@@ -3,6 +3,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { ReactComponent as Search } from "../../icons/search.svg";
 import { ReactComponent as Close } from "../../icons/close_fill.svg";
 import ProductContext from "../../ProductContext";
+import Spinner from "../utils/Spinner";
 
 const AddProduct = ({ setShowModal }) => {
   const { selectedProductsToAdd, addProduct } = useContext(ProductContext);
@@ -546,6 +547,7 @@ const AddProduct = ({ setShowModal }) => {
           {response.map((product, index) => (
             <RenderProduct key={product.id} productData={product} index={index} />
           ))}
+          <Spinner />
         </div>
         <div className="flex justify-between p-2">
           <p>product selected</p>
