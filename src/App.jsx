@@ -3,12 +3,15 @@ import { DragDropContext } from "react-beautiful-dnd";
 
 import "./App.css";
 import HomePage from "./components/HomePage";
+import { ProductProvider } from "./ProductContext";
 
 function App() {
   return (
-    <DragDropContext onDragEnd={()=>{}}>
-      <HomePage />
-    </DragDropContext>
+    <ProductProvider>
+      <DragDropContext onDragEnd={() => {}}>
+        <HomePage />
+      </DragDropContext>
+    </ProductProvider>
   );
 }
 

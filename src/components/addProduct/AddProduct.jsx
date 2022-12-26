@@ -1,9 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 
 import { ReactComponent as Search } from "../../icons/search.svg";
 import { ReactComponent as Close } from "../../icons/close_fill.svg";
+import ProductContext from "../../ProductContext";
 
 const AddProduct = ({ setShowModal }) => {
+  const { selectedProductsToAdd, addProduct } = useContext(ProductContext);
   const response = [
     {
       id: 88,
@@ -384,38 +386,37 @@ const AddProduct = ({ setShowModal }) => {
     },
   ];
   const checkboxStyle = `w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 cursor-pointer`;
-  const [selectedProducts, setSelectedProducts] = useState([]);
+  const [selectedProductsArray, setSelectedProductsArray] = useState();
+  let proArr = [];
 
-  const RenderProduct = ({ productData, selectedProducts, setSelectedProducts }) => {
+  const RenderProduct = ({ productData, index }) => {
     const [selectedVariant, setSelectedVariant] = useState([]);
     const [isProductChecked, setIsProductChecked] = useState(
       selectedVariant.length === productData.variants.length
     );
-    // setSelectedProducts([
-    //   ...selectedProducts,
-    //   {
-    //     id: productData.id,
-    //     title: productData.title,
-    //     variants: [],
-    //   },
-    // ]);
+    let prodObj = {
+      index: index,
+      id: productData.id,
+      title: productData.title,
+      variants: [],
+    };
 
     const toggleProductChecked = () => {
       setIsProductChecked(!isProductChecked);
       // setIsProductChecked(selectedVariant.length === productData.variants.length);
-      // console.log({
-      //   id: productData.id,
-      //   title: productData.title,
-      //   variants: selectedVariant,
-      // });
 
       if (!!isProductChecked) {
-        // const remainingProducts = selectedProducts.filter((item) => item.id !== productData.id);
-        // setSelectedProducts(remainingProducts);
         if (selectedVariant.length === 0) {
           return;
         }
         setSelectedVariant([]);
+        prodObj.variants = [];
+        // console.log("prodObj", prodObj);
+        // proArr[prodObj.index] = prodObj;
+        
+        // remove if no variant is selected
+        proArr.splice(prodObj.index, 1);
+        console.log("proArr", proArr);
       } else if (!isProductChecked) {
         const variantArr = productData.variants.map((variant) => {
           return {
@@ -428,17 +429,12 @@ const AddProduct = ({ setShowModal }) => {
           return;
         }
         setSelectedVariant(variantArr);
-        const productObj = {
-          id: productData.id,
-          title: productData.title,
-          variants: variantArr,
-        };
-        // if (selectedProducts.filter((item) => item.id === productData.id).length < 1) {
-        //   setSelectedProducts([...selectedProducts, productObj]);
-        // }
+        prodObj.variants = variantArr;
+        // console.log("prodObj", prodObj);
+        proArr[prodObj.index] = prodObj;
+        console.log("proArr", proArr);
 
         // console.log("P:", productData.id, productData.variants.length, productData);
-        // setSelectedProducts([...selectedProducts, variantArr]);
         // console.log("variantArr: ", variantArr);
       }
     };
@@ -452,14 +448,19 @@ const AddProduct = ({ setShowModal }) => {
         <button
           className=" bg-green-700 px-4 p-0.5 hover:text-white rounded opacity-75 hover:opacity-100"
           onClick={() => {
-            console.log({
-              id: productData.id,
-              title: productData.title,
-              variants: selectedVariant,
-            });
+            console
+              .log
+              // {
+              //   id: productData.id,
+              //   title: productData.title,
+              //   variants: selectedVariant,
+              // },
+              // "proArr",
+              // proArr,
+              ();
           }}
         >
-          {"Log"}
+          {`Log ${index}`}
         </button>
         <div className="border-y cursor-pointer">
           <div
@@ -476,14 +477,17 @@ const AddProduct = ({ setShowModal }) => {
             />
             <img src={productData.image.src} alt="image" className="w-9 h-9 border rounded mx-4" />
             <p>{productData.title}</p>
-            <p className="text-xs scale-75">{JSON.stringify(selectedVariant)}</p>
+            <p className="text-xs scale-75">{`${JSON.stringify(proArr)}`}</p>
+            {/* <p className="text-xs scale-75">{JSON.stringify(selectedVariant)}</p> */}
           </div>
           <div>
             {productData.variants.map((variant) => (
               <RenderVariant
+                key={variant.id}
                 variantData={variant}
                 selectedVariant={selectedVariant}
                 setSelectedVariant={setSelectedVariant}
+                prodObj={prodObj}
               />
             ))}
           </div>
@@ -492,19 +496,30 @@ const AddProduct = ({ setShowModal }) => {
     );
   };
 
-  const RenderVariant = ({ variantData, selectedVariant, setSelectedVariant }) => {
+  const RenderVariant = ({ variantData, selectedVariant, setSelectedVariant, prodObj }) => {
     const [isVariantChecked, setIsVariantChecked] = useState(
       selectedVariant.filter((item) => item.id === variantData.id).length > 0
     );
 
     const toggleChecked = () => {
       setIsVariantChecked(!isVariantChecked);
+      // setIsVariantChecked(!(selectedVariant.filter((item) => item.id === variantData.id).length > 0));
 
       if (!!isVariantChecked) {
         const remainingVariants = selectedVariant.filter((item) => item.id !== variantData.id);
         setSelectedVariant(remainingVariants);
-      }
-      if (!isVariantChecked) {
+        prodObj.variants = remainingVariants;
+
+        // console.log("prodObj", prodObj);
+        proArr[prodObj.index] = prodObj;
+        // remove if no variant is selected
+        if(remainingVariants.length < 1){
+          proArr.splice(prodObj.index, 1);
+        }
+        // console.log("proArr: if: ", !!isVariantChecked, proArr);
+
+        // addProduct(proArr);
+      } else if (!isVariantChecked) {
         const variantObj = {
           id: variantData.id,
           product_id: variantData.product_id,
@@ -512,9 +527,21 @@ const AddProduct = ({ setShowModal }) => {
         };
         if (selectedVariant.filter((item) => item.id === variantData.id).length < 1) {
           setSelectedVariant([...selectedVariant, variantObj]);
+          prodObj.variants = [...selectedVariant, variantObj];
+
+          // console.log("prodObj", prodObj);
+          proArr[prodObj.index] = prodObj;
+          console.log("proArr: else if: ", !isVariantChecked, proArr);
+
+          // addProduct(prodObj.id, prodObj.title, prodObj.variants);
+          // first revert back to stage when proArr was logging correct value
+          // addProduct(proArr);
         }
         // console.log("variant_id:", variantObj, selectedVariant);
       }
+      //   console.log("after: ", prodObj, isVariantChecked, proArr);
+      // addProduct(prodObj);
+      // addProduct(proArr);
     };
 
     const handleChecked = (e) => {
@@ -536,6 +563,7 @@ const AddProduct = ({ setShowModal }) => {
             // checked={!!isVariantChecked}
             className={`${checkboxStyle} mx-7`}
           />
+          <p>{`${isVariantChecked}`}</p>
           <p>{variantData.title}</p>
         </div>
 
@@ -544,6 +572,7 @@ const AddProduct = ({ setShowModal }) => {
     );
   };
 
+  // addProduct
   return (
     <div className="absolute flex items-center justify-center top-0 left-0 h-screen w-screen ">
       <div
@@ -566,8 +595,8 @@ const AddProduct = ({ setShowModal }) => {
           ></input>
         </div>
         <div className="h-96 overflow-y-scroll overflow-x-hidden">
-          {response.map((product) => (
-            <RenderProduct productData={product} />
+          {response.map((product, index) => (
+            <RenderProduct key={product.id} productData={product} index={index} />
           ))}
         </div>
         <div className="flex justify-between p-2">
@@ -577,7 +606,7 @@ const AddProduct = ({ setShowModal }) => {
               className="px-4 p-0.5 border mx-1 rounded hover:bg-zinc-200"
               onClick={() => {
                 setShowModal(false);
-                setSelectedProducts([]);
+                // setSelectedProductsArray([]);
               }}
             >
               Cancel
@@ -586,14 +615,24 @@ const AddProduct = ({ setShowModal }) => {
               className=" bg-green-700 px-4 p-0.5 hover:text-white rounded opacity-75 hover:opacity-100"
               title={"Add Product"}
               onClick={() => {
-                console.log("selectedProducts: ", selectedProducts);
+                setSelectedProductsArray(proArr);
+                addProduct(proArr);
+                console.log("proArr: ", proArr);
               }}
             >
               {"Add"}
             </button>
           </div>
         </div>
-        <p className="text-xs scale-75">{JSON.stringify(selectedProducts)}</p>
+        <p className="text-xs scale-75">
+          {"selectedProductsArray"}
+          {JSON.stringify(selectedProductsArray)}
+        </p>
+
+        <p className="text-xs scale-75">
+          {"selectedProductsToAdd"}
+          {JSON.stringify(selectedProductsToAdd)}
+        </p>
       </div>
     </div>
   );
