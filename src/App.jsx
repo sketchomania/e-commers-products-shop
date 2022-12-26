@@ -1,14 +1,14 @@
 import React from "react";
-import { DndProvider } from "react-dnd";
-import { HTML5Backend } from "react-dnd-html5-backend";
+import { DragDropContext } from "react-beautiful-dnd";
+
 import "./App.css";
 import HomePage from "./components/HomePage";
 
 function App() {
   return (
-    <DndProvider backend={HTML5Backend}>
+    <DragDropContext onDragEnd={()=>{}}>
       <HomePage />
-    </DndProvider>
+    </DragDropContext>
   );
 }
 

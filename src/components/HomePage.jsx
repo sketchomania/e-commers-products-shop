@@ -2,6 +2,7 @@ import React, { useState } from "react";
 
 import Product from "./product/Product";
 import AddProduct from "./addProduct/AddProduct";
+import { Droppable } from "react-beautiful-dnd";
 
 const HomePage = () => {
   const [productList, setProductList] = useState([
@@ -143,16 +144,26 @@ const HomePage = () => {
             <p className="text-xl py-3 text-gray-400 font-semibold m-2">Product</p>
             <p className="text-xl py-3 text-gray-400 font-semibold m-2">Discount</p>
           </div>
-          <div className={`${isOver ? "border-cyan-400" : ""} border-2`}>
-            {productList.map((product) => (
-              <Product
-                id={product.id}
-                title={product.title}
-                product={product}
-                setShowModal={setShowModal}
-              />
-            ))}
-          </div>
+          <Droppable droppableId="ProductList">
+            {(provided) => (
+              <div
+                className={`${isOver ? "border-cyan-400" : ""} border-2`}
+                ref={provided.innerRef}
+                {...provided.droppableProps}
+              >
+                {productList.map((product, index) => (
+                  <Product
+                    index={index}
+                    id={product.id}
+                    title={product.title}
+                    product={product}
+                    setShowModal={setShowModal}
+                  />
+                ))}
+                {provided.placeholder}
+              </div>
+            )}
+          </Droppable>
         </div>
 
         <div className={`flex flex-row-reverse`}>
