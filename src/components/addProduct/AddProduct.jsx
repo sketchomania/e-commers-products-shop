@@ -1,18 +1,10 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useState } from "react";
 
 import { ReactComponent as Search } from "../../icons/search.svg";
 import { ReactComponent as Close } from "../../icons/close_fill.svg";
-import ProductContext from "../../ProductContext";
 import Spinner from "../utils/Spinner";
 
-const AddProduct = ({
-  productList,
-  setProductList,
-  setShowModal,
-  indexToAdd,
-  addSelectedProductsAtIndex,
-}) => {
-  const { selectedProductsToAdd, addProduct } = useContext(ProductContext);
+const AddProduct = ({ setShowModal, indexToAdd, addSelectedProductsAtIndex }) => {
   const response = [
     {
       id: 88,
@@ -454,9 +446,9 @@ const AddProduct = ({
               className={checkboxStyle}
             />
             <img src={productData.image.src} alt="image" className="w-9 h-9 border rounded mx-4" />
-            <p className="text-xs scale-75">{`index: ${index} ${productData.title}`}</p>
-            <p className="text-xs scale-75">{`${JSON.stringify(proArr)}`}</p>
-            {/* <p className="text-xs scale-75">{JSON.stringify(selectedVariant)}</p> */}
+            <p>{`${productData.title}`}</p>
+            {/* <p className="text-xs scale-75">{`index: ${index} ${productData.title}`}</p> */}
+            {/* <p className="text-xs scale-75">{`${JSON.stringify(proArr)}`}</p> */}
           </div>
           <div>
             {productData.variants.map((variant) => (
@@ -523,7 +515,7 @@ const AddProduct = ({
             // checked={!!isVariantChecked}
             className={`${checkboxStyle} mx-7`}
           />
-          <p>{`${isVariantChecked}`}</p>
+          {/* <p>{`${isVariantChecked}`}</p> */}
           <p>{variantData.title}</p>
         </div>
 
@@ -532,7 +524,7 @@ const AddProduct = ({
     );
   };
 
-  // addProduct
+  // className={`${checkboxStyle} mx-7`}
   return (
     <div className="absolute flex items-center justify-center top-0 left-0 h-screen w-screen ">
       <div className="fixed top-0 left-0 h-full w-full bg-zinc-900 bg-opacity-60 z-10"></div>
@@ -562,7 +554,7 @@ const AddProduct = ({
               className="px-4 p-0.5 border mx-1 rounded hover:bg-zinc-200"
               onClick={() => {
                 setShowModal(false);
-                // setSelectedProductsArray([]);
+                setSelectedProductsArray([]);
               }}
             >
               Cancel
@@ -571,40 +563,20 @@ const AddProduct = ({
               className=" bg-green-700 px-4 p-0.5 hover:text-white rounded opacity-75 hover:opacity-100"
               title={"Add Product"}
               onClick={() => {
-                setSelectedProductsArray(proArr);
-                addProduct(proArr);
-                // addSelectedProductsAtIndex(indexToAdd, proArr);
+                let narr = proArr.filter((item) => item !== null);
+                setSelectedProductsArray(narr);
+                addSelectedProductsAtIndex(indexToAdd, ...narr);
+                setShowModal(false);
               }}
             >
               {"Add"}
             </button>
-            <button
-              className=" bg-green-700 px-4 p-0.5 hover:text-white rounded opacity-75 hover:opacity-100"
-              onClick={() => {
-                console.log(indexToAdd, productList.length, selectedProductsArray);
-                addSelectedProductsAtIndex(indexToAdd, selectedProductsArray);
-                // let newarr = [...productList].splice(indexToAdd, 0, ...selectedProductsArray);
-                
-                // let newarr = [...productList];
-                // newarr.splice(indexToAdd,  0,...selectedProductsArray);
-                // console.log([...productList], "newarr:", newarr);
-
-                // setProductList([...productList].splice(indexToAdd, 0, ...selectedProductsArray));
-              }}
-            >
-              {"Add items to product list"}
-            </button>
           </div>
         </div>
-        <p className="text-xs scale-75">
+        {/* <p className="text-xs scale-75">
           {"selectedProductsArray"}
           {JSON.stringify(selectedProductsArray)}
-        </p>
-
-        <p className="text-xs scale-75">
-          {"selectedProductsToAdd"}
-          {JSON.stringify(selectedProductsToAdd)}
-        </p>
+        </p> */}
       </div>
     </div>
   );

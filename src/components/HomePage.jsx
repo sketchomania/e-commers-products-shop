@@ -188,7 +188,7 @@ const HomePage = () => {
 
   const addSelectedProductsAtIndex = (atIndex, itemArr) => {
     const newarr = [...productList];
-    newarr.splice(atIndex, 1, ...itemArr);
+    newarr.splice(atIndex, 1, itemArr);
     setProductList(newarr);
   };
 
@@ -242,8 +242,6 @@ const HomePage = () => {
         </div>
         {showModal && (
           <AddProduct
-            productList={productList}
-            setProductList={setProductList}
             setShowModal={setShowModal}
             indexToAdd={indexToAdd}
             addSelectedProductsAtIndex={addSelectedProductsAtIndex}

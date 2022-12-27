@@ -26,7 +26,7 @@ const Product = ({ setShowModal, product, index, setIndexToAdd }) => {
     <Draggable draggableId={product.id.toString()} key={product.id} index={index}>
       {(provided) => (
         <div
-          className={`${isDragging ? "border-green-500" : ""} border-b rounded`}
+          className={`${isDragging ? "border-green-500" : ""} border-b mb-2 pb-1 rounded`}
           {...provided.draggableProps}
           {...provided.dragHandleProps}
           ref={provided.innerRef}
@@ -54,7 +54,7 @@ const Product = ({ setShowModal, product, index, setIndexToAdd }) => {
               {"Add Discount"}
             </button>
           </div>
-          {/* {product?.variants.length < 2 ? null : ( */}
+          {product?.variants.length < 2 ? null : (
             <div>
               <div
                 className="flex flex-row-reverse text-sm text-blue-500 opacity-75 hover:opacity-100 cursor-pointer"
@@ -77,7 +77,7 @@ const Product = ({ setShowModal, product, index, setIndexToAdd }) => {
                 </>
               )}
             </div>
-          {/* )} */}
+          )}
         </div>
       )}
     </Draggable>
