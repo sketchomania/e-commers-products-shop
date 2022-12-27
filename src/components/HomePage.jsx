@@ -223,7 +223,7 @@ const HomePage = () => {
                 <div
                   className={`${
                     snapshot.isDraggingOver
-                      ? "border-cyan-300 border shadow-sm shadow-cyan-300"
+                      ? "border-cyan-300 rounded-md border shadow-sm shadow-cyan-300"
                       : ""
                   } p-1`}
                   ref={provided.innerRef}
