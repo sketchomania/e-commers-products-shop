@@ -7,7 +7,7 @@ import { ReactComponent as Expand } from "../../icons/expand_more.svg";
 import { ReactComponent as Collaps } from "../../icons/expand_less.svg";
 import { Draggable } from "react-beautiful-dnd";
 
-const Product = ({ id, title, setShowModal, product, index }) => {
+const Product = ({ setShowModal, product, index, setIndexToAdd }) => {
   const [showVarient, setShowVarient] = useState(false);
   const isDragging = false;
 
@@ -23,23 +23,24 @@ const Product = ({ id, title, setShowModal, product, index }) => {
     );
   };
   return (
-    <Draggable draggableId={id.toString()} key={id} index={index}>
+    <Draggable draggableId={product.id.toString()} key={product.id} index={index}>
       {(provided) => (
         <div
-          className={`${isDragging ? "border-green-500" : ""} border rounded`}
+          className={`${isDragging ? "border-green-500" : ""} border-b rounded`}
           {...provided.draggableProps}
           {...provided.dragHandleProps}
           ref={provided.innerRef}
         >
-          <div className="flex items-center ">
-            <Drag className="w-7 h-7 pt-px cursor-pointer fill-zinc-500 hover:fill-black" />
-            <p className="border text-zinc-500">{`${index}.`}</p>
-            <div className="flex w-full items-center justify-between bg-white rounded-md px-6 mx-2">
-              <p className="w-full text-zinc-500">{title}</p>
+          <div className="flex items-center text-xs text-zinc-500">
+            <Drag className="w-10 h-7 pt-px cursor-pointer fill-zinc-500 hover:fill-black" />
+            <p className="">{`${index}.`}</p>
+            <div className="flex w-full items-center justify-between shadow-md bg-white rounded-md px-4 mx-2">
+              <p className="w-full">{`${product ? product.title : "Select Product"}`}</p>
               <div
-                className="fill-green-700 scale-75 hover:bg-zinc-100 p-2 rounded cursor-pointer"
+                className="fill-green-700 scale-75 hover:bg-zinc-100 p-1 rounded cursor-pointer"
                 onClick={() => {
                   setShowModal(true);
+                  setIndexToAdd(index);
                 }}
               >
                 <Edit />
@@ -47,7 +48,7 @@ const Product = ({ id, title, setShowModal, product, index }) => {
             </div>
 
             <button
-              className=" bg-green-700 p-2 rounded-md w-60 h-full opacity-75 hover:opacity-100"
+              className="text-white bg-green-700 p-2 rounded-md w-60 h-full opacity-80 hover:opacity-100"
               title={"Add Discount"}
             >
               {"Add Discount"}
@@ -69,7 +70,7 @@ const Product = ({ id, title, setShowModal, product, index }) => {
             </div>
             {showVarient && (
               <>
-                {product.variants.map((variant) => (
+                {product?.variants.map((variant) => (
                   <Varient varient={variant} />
                 ))}
               </>

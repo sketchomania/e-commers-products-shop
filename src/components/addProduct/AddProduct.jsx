@@ -5,7 +5,7 @@ import { ReactComponent as Close } from "../../icons/close_fill.svg";
 import ProductContext from "../../ProductContext";
 import Spinner from "../utils/Spinner";
 
-const AddProduct = ({ setShowModal }) => {
+const AddProduct = ({ setShowModal, indexToAdd }) => {
   const { selectedProductsToAdd, addProduct } = useContext(ProductContext);
   const response = [
     {
@@ -533,7 +533,7 @@ const AddProduct = ({ setShowModal }) => {
 
       <div className="bg-white z-10 flex flex-col border w-2/5 rounded-lg text-sm">
         <div className="p-3 flex items-center border-b justify-between text-base font-medium">
-          <h2>Add products</h2>
+          <h2>{indexToAdd}Add products</h2>
           <Close className="scale-90 fill-zinc-500 hover:fill-black cursor-pointer" />
         </div>
         <div className="m-3 flex items-center border rounded ">
