@@ -193,6 +193,21 @@ const HomePage = () => {
     setProductList(newarr);
   };
 
+  const removeProduct = (productIndex) => {
+    // const removedValue = productList[productIndex];
+    const newarr = [...productList];
+    newarr.splice(productIndex, 1);
+    setProductList(newarr);
+  };
+
+  const removeVariant = (productIndex, variantIndex) => {
+    const item = productList[productIndex];
+    item.variants.splice(variantIndex, 1);
+    const newarr = [...productList];
+    newarr.splice(productIndex, 1, item);
+    setProductList(newarr);
+  };
+
   return (
     <DragDropContext onDragEnd={onDragEnd}>
       <div className="h-screen w-full">
@@ -214,12 +229,14 @@ const HomePage = () => {
                   ref={provided.innerRef}
                   {...provided.droppableProps}
                 >
-                  {productList.map((product, index) => (
+                  {productList.map((product, productIndex) => (
                     <Product
-                      index={index}
+                      productIndex={productIndex}
                       product={product}
                       setShowModal={setShowModal}
                       setIndexToAdd={setIndexToAdd}
+                      removeProduct={removeProduct}
+                      removeVariant={removeVariant}
                     />
                   ))}
                   {provided.placeholder}
