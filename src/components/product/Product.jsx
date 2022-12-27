@@ -23,7 +23,7 @@ const Product = ({ id, title, setShowModal, product, index }) => {
     );
   };
   return (
-    <Draggable draggableId={"ProductList"} index={index}>
+    <Draggable draggableId={id.toString()}  key={id} index={index}>
       {(provided) => (
         <div
           className={`${isDragging ? "border-green-500" : ""} border rounded`}
