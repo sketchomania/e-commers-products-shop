@@ -23,7 +23,7 @@ const Product = ({ id, title, setShowModal, product, index }) => {
     );
   };
   return (
-    <Draggable draggableId={id.toString()}  key={id} index={index}>
+    <Draggable draggableId={id.toString()} key={id} index={index}>
       {(provided) => (
         <div
           className={`${isDragging ? "border-green-500" : ""} border rounded`}
@@ -33,6 +33,7 @@ const Product = ({ id, title, setShowModal, product, index }) => {
         >
           <div className="flex items-center ">
             <Drag className="w-7 h-7 pt-px cursor-pointer fill-zinc-500 hover:fill-black" />
+            <p className="border text-zinc-500">{`${index}.`}</p>
             <div className="flex w-full items-center justify-between bg-white rounded-md px-6 mx-2">
               <p className="w-full text-zinc-500">{title}</p>
               <div

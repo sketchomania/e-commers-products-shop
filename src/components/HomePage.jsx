@@ -1,12 +1,9 @@
 import React, { useState } from "react";
+import { DragDropContext, Droppable } from "react-beautiful-dnd";
 
 import Product from "./product/Product";
 import AddProduct from "./addProduct/AddProduct";
-import { DragDropContext, Droppable } from "react-beautiful-dnd";
-
-const swapElements = (arrayToSwap, index1, index2) => {
-  arrayToSwap[index1] = arrayToSwap.splice(index2, 1, arrayToSwap[index1])[0];
-};
+import SwapElements from "./utils/SwapElements";
 
 const HomePage = () => {
   const [productList, setProductList] = useState([
@@ -149,20 +146,11 @@ const HomePage = () => {
     let add,
       active = productList;
 
-    
-
     if (source.droppableId === "ProductList" && destination.droppableId === "ProductList") {
-      // prevEle =
       add = active[source.index];
-      // remove from that index
-      // active.splice(source.index, 1);
-      // active.slice(destination.index, 0, add);
-      swapElements(active, source.index, destination.index);
+      // swap elements
+      SwapElements(active, source.index, destination.index);
     }
-    // add
-    // if (destination.droppableId === "ProductList") {
-    //   active.slice(destination.index, 0, add);
-    // }
 
     setProductList(active);
   };
