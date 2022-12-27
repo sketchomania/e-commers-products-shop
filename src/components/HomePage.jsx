@@ -154,14 +154,9 @@ const HomePage = () => {
       status: "active",
     },
   ]);
-  const [selectedProduct, setSelectedProduct] = useState([]);
+
   const [showModal, setShowModal] = useState(false);
   const [indexToAdd, setIndexToAdd] = useState(0);
-  const isOver = false;
-
-  const addedProduct = (id) => {
-    console.log(id);
-  };
 
   const onDragEnd = (result) => {
     const { source, destination } = result;
@@ -188,9 +183,13 @@ const HomePage = () => {
       title: "Select Product",
       variants: [],
     };
-    // let newArr = productList;
-
     setProductList([...productList, emptyProduct]);
+  };
+
+  const addSelectedProductsAtIndex = (atIndex, itemArr) => {
+    const newarr = [...productList];
+    newarr.splice(atIndex, 1, ...itemArr);
+    setProductList(newarr);
   };
 
   return (
@@ -239,15 +238,15 @@ const HomePage = () => {
               {"Add Discount"}
             </button>
           </div>
+          <p>{JSON.stringify(productList.length)}</p>
         </div>
         {showModal && (
           <AddProduct
-            selectedProduct={selectedProduct}
-            setSelectedProduct={setSelectedProduct}
-            setShowModal={setShowModal}
             productList={productList}
             setProductList={setProductList}
+            setShowModal={setShowModal}
             indexToAdd={indexToAdd}
+            addSelectedProductsAtIndex={addSelectedProductsAtIndex}
           />
         )}
       </div>

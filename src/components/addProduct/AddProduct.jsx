@@ -5,7 +5,13 @@ import { ReactComponent as Close } from "../../icons/close_fill.svg";
 import ProductContext from "../../ProductContext";
 import Spinner from "../utils/Spinner";
 
-const AddProduct = ({ setShowModal, indexToAdd }) => {
+const AddProduct = ({
+  productList,
+  setProductList,
+  setShowModal,
+  indexToAdd,
+  addSelectedProductsAtIndex,
+}) => {
   const { selectedProductsToAdd, addProduct } = useContext(ProductContext);
   const response = [
     {
@@ -567,9 +573,26 @@ const AddProduct = ({ setShowModal, indexToAdd }) => {
               onClick={() => {
                 setSelectedProductsArray(proArr);
                 addProduct(proArr);
+                // addSelectedProductsAtIndex(indexToAdd, proArr);
               }}
             >
               {"Add"}
+            </button>
+            <button
+              className=" bg-green-700 px-4 p-0.5 hover:text-white rounded opacity-75 hover:opacity-100"
+              onClick={() => {
+                console.log(indexToAdd, productList.length, selectedProductsArray);
+                addSelectedProductsAtIndex(indexToAdd, selectedProductsArray);
+                // let newarr = [...productList].splice(indexToAdd, 0, ...selectedProductsArray);
+                
+                // let newarr = [...productList];
+                // newarr.splice(indexToAdd,  0,...selectedProductsArray);
+                // console.log([...productList], "newarr:", newarr);
+
+                // setProductList([...productList].splice(indexToAdd, 0, ...selectedProductsArray));
+              }}
+            >
+              {"Add items to product list"}
             </button>
           </div>
         </div>

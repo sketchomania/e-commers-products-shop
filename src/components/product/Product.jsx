@@ -54,28 +54,30 @@ const Product = ({ setShowModal, product, index, setIndexToAdd }) => {
               {"Add Discount"}
             </button>
           </div>
-          <div>
-            <div
-              className="flex flex-row-reverse text-sm text-blue-500 opacity-75 hover:opacity-100 cursor-pointer"
-              onClick={() => {
-                setShowVarient(!showVarient);
-              }}
-            >
-              {showVarient ? (
-                <Collaps className="fill-blue-500 scale-75" />
-              ) : (
-                <Expand className="fill-blue-500 scale-75" />
+          {/* {product?.variants.length < 2 ? null : ( */}
+            <div>
+              <div
+                className="flex flex-row-reverse text-sm text-blue-500 opacity-75 hover:opacity-100 cursor-pointer"
+                onClick={() => {
+                  setShowVarient(!showVarient);
+                }}
+              >
+                {showVarient ? (
+                  <Collaps className="fill-blue-500 scale-75" />
+                ) : (
+                  <Expand className="fill-blue-500 scale-75" />
+                )}
+                <p>{showVarient ? "Hide" : "Show"} varients </p>
+              </div>
+              {showVarient && (
+                <>
+                  {product?.variants.map((variant) => (
+                    <Varient varient={variant} />
+                  ))}
+                </>
               )}
-              <p>{showVarient ? "Hide" : "Show"} varients </p>
             </div>
-            {showVarient && (
-              <>
-                {product?.variants.map((variant) => (
-                  <Varient varient={variant} />
-                ))}
-              </>
-            )}
-          </div>
+          {/* )} */}
         </div>
       )}
     </Draggable>
