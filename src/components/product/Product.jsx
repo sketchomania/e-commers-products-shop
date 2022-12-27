@@ -9,6 +9,9 @@ import { Draggable } from "react-beautiful-dnd";
 
 const Product = ({ setShowModal, product, index, setIndexToAdd }) => {
   const [showVarient, setShowVarient] = useState(false);
+  const [showDiscount, setShowDiscount] = useState(false);
+  const [showDiscountDropdown, setShowDiscountDropdown] = useState(false);
+  const [showFlatDiscount, setShowFlatDiscount] = useState(false);
   const isDragging = false;
 
   const Varient = ({ varient }) => {
@@ -33,7 +36,7 @@ const Product = ({ setShowModal, product, index, setIndexToAdd }) => {
         >
           <div className="flex items-center text-xs text-zinc-500">
             <Drag className="w-10 h-7 pt-px cursor-pointer fill-zinc-500 hover:fill-black" />
-            <p className="">{`${index}.`}</p>
+            <p className="">{`${index + 1}.`}</p>
             <div className="flex w-full items-center justify-between shadow-md bg-white rounded-md px-4 mx-2">
               <p className="w-full">{`${product ? product.title : "Select Product"}`}</p>
               <div
@@ -47,12 +50,61 @@ const Product = ({ setShowModal, product, index, setIndexToAdd }) => {
               </div>
             </div>
 
-            <button
-              className="text-white bg-green-700 p-2 rounded-md w-60 h-full opacity-80 hover:opacity-100"
-              title={"Add Discount"}
-            >
-              {"Add Discount"}
-            </button>
+            {showDiscount ? (
+              <div className="flex items-center justify-between">
+                <p
+                  contentEditable
+                  suppressContentEditableWarning={true}
+                  className="bg-white p-1.5 rounded-md w-16 text-center cursor-text outline-none"
+                >{`10`}</p>
+                <div className="relative">
+                  <p
+                    className="mx-1 bg-white p-1.5 rounded-md w-16 text-center cursor-pointer"
+                    onClick={() => {
+                      setShowDiscountDropdown(true);
+                    }}
+                  >{`${showFlatDiscount ? "flat off" : "% off"}`}</p>
+                  <div>
+                    {showDiscountDropdown && (
+                      <>
+                        <div
+                          className="fixed h-full w-full top-0 left-0 z-10 cursor-default"
+                          onClick={() => {
+                            setShowDiscountDropdown(false);
+                          }}
+                        ></div>
+                        <div className="right-4 absolute z-10 flex flex-col justify-around shadow-md shadow-zinc-400 border-t border-t-zinc-100 text-zinc-700 py-1 w-max bg-white rounded-md cursor-pointer text-xs">
+                          <h3
+                            className="hover:bg-zinc-200 px-2 py-0.5"
+                            onClick={() => {
+                              setShowFlatDiscount(true);
+                              setShowDiscountDropdown(false);
+                            }}
+                          >{`flat off`}</h3>
+                          <h3
+                            className="hover:bg-zinc-200 px-2 py-0.5"
+                            onClick={() => {
+                              setShowFlatDiscount(false);
+                              setShowDiscountDropdown(false);
+                            }}
+                          >{`% off`}</h3>
+                        </div>
+                      </>
+                    )}
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <button
+                className="text-white bg-green-700 p-2 rounded-md w-60 h-full opacity-80 hover:opacity-100"
+                title={"Add Discount"}
+                onClick={() => {
+                  setShowDiscount(true);
+                }}
+              >
+                {"Add Discount"}
+              </button>
+            )}
           </div>
           {product?.variants.length < 2 ? null : (
             <div>

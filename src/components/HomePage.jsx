@@ -6,6 +6,7 @@ import AddProduct from "./addProduct/AddProduct";
 import SwapElements from "./utils/SwapElements";
 
 const HomePage = () => {
+  // default productList = []
   const [productList, setProductList] = useState([
     {
       id: 88,
@@ -238,7 +239,7 @@ const HomePage = () => {
               {"Add Discount"}
             </button>
           </div>
-          <p>{JSON.stringify(productList.length)}</p>
+          {/* <p>{JSON.stringify(productList.length)}</p> */}
         </div>
         {showModal && (
           <AddProduct

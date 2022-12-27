@@ -548,7 +548,8 @@ const AddProduct = ({ setShowModal, indexToAdd, addSelectedProductsAtIndex }) =>
           <Spinner />
         </div>
         <div className="flex justify-between p-2">
-          <p>product selected</p>
+          <p>{`product selected`}</p>
+          {/* <p>{`${proArr.filter((i) => i !== null).length} product selected`}</p> */}
           <div>
             <button
               className="px-4 p-0.5 border mx-1 rounded hover:bg-zinc-200"
