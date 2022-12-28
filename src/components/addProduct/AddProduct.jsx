@@ -186,7 +186,8 @@ const AddProduct = ({ setShowModal, indexToAdd, addSelectedProductsAtIndex }) =>
 
       <div className="bg-white z-10 flex flex-col border w-2/5 rounded-lg text-sm">
         <div className="p-3 flex items-center border-b justify-between text-base font-medium">
-          <h2>{indexToAdd}Add products</h2>
+          <h2>Add products </h2>
+          {/* <h2> at {indexToAdd + 1}</h2> */}
           <Close
             className="scale-90 fill-zinc-500 hover:fill-black cursor-pointer"
             onClick={cancelHandler}
@@ -239,7 +240,7 @@ const AddProduct = ({ setShowModal, indexToAdd, addSelectedProductsAtIndex }) =>
               onClick={() => {
                 let narr = proArr.filter((item) => item !== null);
                 // setSelectedProductsArray(narr);
-                addSelectedProductsAtIndex(indexToAdd, ...narr);
+                addSelectedProductsAtIndex(indexToAdd, narr);
                 setShowModal(false);
               }}
             >

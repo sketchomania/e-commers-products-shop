@@ -56,9 +56,17 @@ const HomePage = () => {
   };
 
   const addSelectedProductsAtIndex = (atIndex, itemArr) => {
-    const newarr = [...productList];
-    newarr.splice(atIndex, 1, itemArr);
-    setProductList(newarr);
+    if (productList.length < 1) {
+      setProductList(itemArr);
+    } else {
+      const newarr = [...productList];
+      // if(itemArr.length <1) {
+      //   newarr.splice(atIndex, 1, itemArr)
+      // }else{
+      newarr.splice(atIndex, 1, ...itemArr);
+      // }
+      setProductList(newarr);
+    }
   };
 
   const removeProduct = (productIndex) => {
