@@ -1,4 +1,37 @@
-# Getting Started with Create React App
+# E-commerse-product-shop
+
+## Features list:
+
+- The user should also be able to change the order of ✅products or variants using drag and drop.
+- ✅ User should be able to remove products by clicking on the "x" icon.
+- The "x" icon should not be displayed if there is only one product in the list.
+- ✅ The user should be able to add discount to a product or a variant.
+- ✅ The user can select a flat discount or a percentage discount.
+
+- ✅This is a dialog box which fetches and displays the list of products on the store.
+- ✅The picker also contains a search bar using which the user can search for a product by name.
+- ✅Pagination: Implement a scroll based pagination. Initially a maximum of 10 products should be displayed. If the user scrolls to the end of the dialog box, load the next 10 products and so on until you reach the end of the results.
+
+### 1. Product List:
+
+This is a list of products that the user has selected.
+
+- ✅A product may consist of multiple variants or a single variant. If a product has only one variant then don’t display the show variants / hide variants button.
+- ✅The user should be able to add discount to a product or a variant.
+- ✅The user can select a flat discount or a percentage discount.
+- ✅The user should also be able to change the order of products or variants using drag and drop. User should be able to remove products by clicking on the "x" icon.
+- The "x" icon should not be displayed if there is only one product in the list.
+
+### 2. Product Picker:
+
+- ✅This is a dialog box which fetches and displays the list of products on the store. The product picker should be opened when the user clicks on the edit icon of the product. The picker also contains a search bar using which the user can search for a product by name. The user can select multiple products and variants from the dialog box. Post selection, the product on which the edit icon was clicked should be replaced with the products that the user has selected.
+- ✅Pagination: Implement a scroll based pagination. Initially a maximum of 10 products should be displayed. If the user scrolls to the end of the dialog box, load the next 10 products and so on until you reach the end of the results.
+
+### 3. Add Product Button:
+
+- ✅This button is used to add an empty product at the end of the list.
+
+## Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
