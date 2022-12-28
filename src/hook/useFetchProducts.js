@@ -3,11 +3,15 @@ import { useEffect, useState } from "react";
 
 const url = `https://stageapibc.monkcommerce.app/admin/shop/product`;
 
-export const useFetchProducts = (search, page) => {
+export const useFetchProducts = (searchTerm, pageNumber) => {
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
   const [products, setProducts] = useState([]);
   const [hasMore, setHasMore] = useState(false);
+
+  useEffect(() => {
+    setProducts([]);
+  }, [searchTerm]);
 
   useEffect(() => {
     setIsLoading(true);
@@ -17,14 +21,16 @@ export const useFetchProducts = (search, page) => {
     axios({
       method: "GET",
       url: url,
-      params: { search: search, page: page },
+      params: { search: searchTerm, page: pageNumber },
       cancelToken: new axios.CancelToken((c) => (cancelRequest = c)),
     })
       .then((response) => {
         const data = response.data;
-        // console.log("response", response, "data length: ", data.length, data);
+        const dataArr = [...data];
+        // console.log("data: ", dataArr);
+        // console.log("data: ", ...response.data);
         setProducts((prevProducts) => {
-          return [...prevProducts, ...data];
+          return [...prevProducts, ...dataArr];
         });
         setHasMore(response.data.length > 0);
         setIsLoading(false);
@@ -35,7 +41,7 @@ export const useFetchProducts = (search, page) => {
       });
 
     return () => cancelRequest();
-  }, [search, page]);
+  }, [searchTerm, pageNumber]);
 
   return { isLoading, isError, products, hasMore };
 };

@@ -69,7 +69,7 @@ const Variant = ({ variantIndex, variant, removeVariant, productIndex }) => {
             </div>
           ) : (
             <button
-              className="shadow-lg text-white bg-green-700 py-1 px-2 rounded-full opacity-80 hover:opacity-100"
+              className="shadow-lg text-white bg-green-700 py-1 w-32 rounded-full opacity-80 hover:opacity-100"
               title={"Add Discount"}
               onClick={() => {
                 setShowDiscount(true);
