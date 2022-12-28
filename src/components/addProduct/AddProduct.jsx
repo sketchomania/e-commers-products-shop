@@ -218,8 +218,10 @@ const AddProduct = ({ setShowModal, indexToAdd, addSelectedProductsAtIndex }) =>
               return <RenderProduct key={product.id} productData={product} index={index} />;
             }
           })}
-          {isLoading && <Spinner />}
-          {isError && <p>{`No more products found: "${searchTerm}"`}</p>}
+          {!isError && isLoading && <Spinner />}
+          {isError && (
+            <p className="text-center p-2 text-zinc-500">{`No more products found: "${searchTerm}"`}</p>
+          )}
         </div>
         <div className="flex justify-between p-2">
           <p>{`product selected`}</p>

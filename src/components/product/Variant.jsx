@@ -10,7 +10,7 @@ const Variant = ({ variantIndex, variant, removeVariant, productIndex }) => {
   const [showFlatDiscount, setShowFlatDiscount] = useState(false);
 
   return (
-    <Draggable draggableId={variant.id.toString()} key={variant.id} index={variantIndex}>
+    <Draggable draggableId={`${productIndex} ${variantIndex}`} key={variant.id} index={variantIndex}>
       {(provided) => (
         <div
           className="flex items-center pl-14 pb-1 text-xs text-zinc-500"

@@ -161,22 +161,37 @@ const HomePage = () => {
   const [showCancelProduct, setShowCancelProduct] = useState(false);
 
   const onDragEnd = (result) => {
-    const { source, destination } = result;
+    const { source, destination, draggableId } = result;
     console.log(result);
     if (!destination) return;
     if (destination.droppableId === source.droppableId && destination.index === source.index)
       return;
 
-    let add,
-      active = productList;
+    let productSelected,
+      variantSelected,
+      productListCopy = productList;
 
     if (source.droppableId === "ProductList" && destination.droppableId === "ProductList") {
-      add = active[source.index];
+      productSelected = productListCopy[source.index];
       // swap elements
-      SwapElements(active, source.index, destination.index);
+      SwapElements(productListCopy, source.index, destination.index);
     }
 
-    setProductList(active);
+    // variant drag handler
+    const productIndex = draggableId.split(" ")[0];
+    // console.log(productIndex);
+    if (
+      source.droppableId === `Product-${productIndex} VariantList` &&
+      destination.droppableId === `Product-${productIndex} VariantList`
+    ) {
+      productSelected = productListCopy[productIndex];
+      variantSelected = productSelected.variants[source.index];
+      console.log("productIndex: ", productIndex, "variantIndex", source.index,  variantSelected);
+
+      SwapElements(productListCopy[productIndex].variants, source.index, destination.index);
+    }
+
+    setProductList(productListCopy);
   };
 
   const addEmptyProduct = () => {
