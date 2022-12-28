@@ -158,6 +158,7 @@ const HomePage = () => {
 
   const [showModal, setShowModal] = useState(false);
   const [indexToAdd, setIndexToAdd] = useState(0);
+  const [showCancelProduct, setShowCancelProduct] = useState(false);
 
   const onDragEnd = (result) => {
     const { source, destination } = result;
@@ -200,6 +201,21 @@ const HomePage = () => {
     setProductList(newarr);
   };
 
+  // const checkProductListLength = () => {
+  //   const newarr = [...productList];
+  //   const len = newarr.filter((product) => {
+  //     product.title !== "Select Product";
+  //   }).length;
+
+  //   if (len > 1) {
+  //     setShowCancelProduct(true);
+  //   } else {
+  //     setShowCancelProduct(false);
+  //   }
+
+  //   console.log("len: ", len);
+  // };
+
   const removeVariant = (productIndex, variantIndex) => {
     const item = productList[productIndex];
     item.variants.splice(variantIndex, 1);
@@ -218,7 +234,7 @@ const HomePage = () => {
               <p className="text-md  pl-4 text-zinc-500 font-semibold m-2">Product</p>
               <p className="text-md  pr-12 text-zinc-500 font-semibold m-2">Discount</p>
             </div>
-            <Droppable droppableId="ProductList">
+            <Droppable droppableId="ProductList" type="PRODUCTLIST">
               {(provided, snapshot) => (
                 <div
                   className={`${
@@ -233,6 +249,7 @@ const HomePage = () => {
                     <Product
                       productIndex={productIndex}
                       product={product}
+                      key={product.id}
                       setShowModal={setShowModal}
                       setIndexToAdd={setIndexToAdd}
                       removeProduct={removeProduct}

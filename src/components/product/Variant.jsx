@@ -14,7 +14,7 @@ const Variant = ({ variantIndex, variant, removeVariant, productIndex }) => {
       {(provided) => (
         <div
           className="flex items-center pl-14 pb-1 text-xs text-zinc-500"
-          {...provided.dragHandleProps}
+          {...provided.draggableProps}
           {...provided.dragHandleProps}
           ref={provided.innerRef}
         >

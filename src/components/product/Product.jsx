@@ -20,6 +20,7 @@ const Product = ({
   const [showDiscount, setShowDiscount] = useState(false);
   const [showDiscountDropdown, setShowDiscountDropdown] = useState(false);
   const [showFlatDiscount, setShowFlatDiscount] = useState(false);
+  const isDragging = false;
 
   // product
   return (
@@ -130,7 +131,10 @@ const Product = ({
                 <p>{showVarient ? "Hide" : "Show"} varients </p>
               </div>
               {showVarient && (
-                <Droppable droppableId={`Product-${productIndex} VariantList`}>
+                <Droppable
+                  droppableId={`Product-${productIndex} VariantList`}
+                  type={`Product-${productIndex} Variant List`}
+                >
                   {(provided, snapshot) => (
                     <div
                       className={`${
@@ -145,11 +149,12 @@ const Product = ({
                         <Variant
                           variantIndex={variantIndex}
                           variant={variant}
+                          key={variant.id}
                           removeVariant={removeVariant}
                           productIndex={productIndex}
                         />
                       ))}
-                      {/* {provided.placeholder} */}
+                      {provided.placeholder}
                     </div>
                   )}
                 </Droppable>

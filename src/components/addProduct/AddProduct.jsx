@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { ReactComponent as Search } from "../../icons/search.svg";
 import { ReactComponent as Close } from "../../icons/close_fill.svg";
 import Spinner from "../utils/Spinner";
+import { useFetchProducts } from "../../hook/useFetchProducts";
 
 const AddProduct = ({ setShowModal, indexToAdd, addSelectedProductsAtIndex }) => {
   const response = [
@@ -384,10 +385,20 @@ const AddProduct = ({ setShowModal, indexToAdd, addSelectedProductsAtIndex }) =>
       status: "active",
     },
   ];
-  const checkboxStyle = `w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 cursor-pointer`;
-  const [selectedProductsArray, setSelectedProductsArray] = useState();
+  const [query, setQuery] = useState("");
+  const [pageNumber, setPageNumber] = useState(1);
   let proArr = [];
+  const checkboxStyle = `w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 cursor-pointer`;
+  // const [selectedProductsArray, setSelectedProductsArray] = useState();
 
+  const handleSearchProduct = (e) => {
+    setQuery(e.target.value);
+    setPageNumber(1);
+  };
+
+  const { isLoading, isError, products, hasMore } = useFetchProducts(query, pageNumber);
+
+  // renderProduct
   const RenderProduct = ({ productData, index }) => {
     const [selectedVariant, setSelectedVariant] = useState([]);
     const [isProductChecked, setIsProductChecked] = useState(
@@ -466,6 +477,7 @@ const AddProduct = ({ setShowModal, indexToAdd, addSelectedProductsAtIndex }) =>
     );
   };
 
+  // renderVariant
   const RenderVariant = ({ variantData, selectedVariant, setSelectedVariant, prodObj }) => {
     const [isVariantChecked, setIsVariantChecked] = useState(
       selectedVariant.filter((item) => item.id === variantData.id).length > 0
@@ -524,7 +536,7 @@ const AddProduct = ({ setShowModal, indexToAdd, addSelectedProductsAtIndex }) =>
     );
   };
 
-  // className={`${checkboxStyle} mx-7`}
+  // addProduct
   return (
     <div className="absolute flex items-center justify-center top-0 left-0 h-screen w-screen ">
       <div className="fixed top-0 left-0 h-full w-full bg-zinc-900 bg-opacity-60 z-10"></div>
@@ -538,14 +550,18 @@ const AddProduct = ({ setShowModal, indexToAdd, addSelectedProductsAtIndex }) =>
           <Search className="scale-75 fill-zinc-500 hover:fill-black cursor-pointer" />
           <input
             placeholder="Search product"
+            type="text"
+            onChange={handleSearchProduct}
             className="w-full outline-none bg-transparent"
           ></input>
         </div>
         <div className="h-96 overflow-y-scroll overflow-x-hidden">
-          {response.map((product, index) => (
+          {/* {response.map((product, index) => ( */}
+          {products.map((product, index) => (
             <RenderProduct key={product.id} productData={product} index={index} />
           ))}
-          <Spinner />
+          {isLoading && <Spinner />}
+          {isError && <p>{"Something went wrong..."}</p>}
         </div>
         <div className="flex justify-between p-2">
           <p>{`product selected`}</p>
@@ -555,7 +571,7 @@ const AddProduct = ({ setShowModal, indexToAdd, addSelectedProductsAtIndex }) =>
               className="px-4 p-0.5 border mx-1 rounded hover:bg-zinc-200"
               onClick={() => {
                 setShowModal(false);
-                setSelectedProductsArray([]);
+                // setSelectedProductsArray([]);
               }}
             >
               Cancel
@@ -565,7 +581,7 @@ const AddProduct = ({ setShowModal, indexToAdd, addSelectedProductsAtIndex }) =>
               title={"Add Product"}
               onClick={() => {
                 let narr = proArr.filter((item) => item !== null);
-                setSelectedProductsArray(narr);
+                // setSelectedProductsArray(narr);
                 addSelectedProductsAtIndex(indexToAdd, ...narr);
                 setShowModal(false);
               }}
